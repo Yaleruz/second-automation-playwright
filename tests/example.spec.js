@@ -89,6 +89,7 @@ test('ejercicio', async ({ browser }) => {
          await dropdown.locator("button").nth(i).click();
          //se rompe el bucle
          break;
+
         
        }
       
@@ -97,7 +98,7 @@ test('ejercicio', async ({ browser }) => {
 
 
 
-
+    //se espera   
 
     await page.pause();
 
