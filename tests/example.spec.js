@@ -11,13 +11,14 @@ test('ejercicio', async ({ browser }) => {
   console.log(await page.title());
 
   //
-
+  
   const email = ('#userEmail');
   const password = ('#userPassword');
   const btnLogin = ('#login');
   const products =   await page.locator(".card-body"); 
   const productName = 'ZARA COAT 3';
-  await page.locator(email).fill('Yimi@gmail.com');
+  const emailUser = 'Yimi@gmail.com';
+  await page.locator(email).fill(emailUser);
   await page.locator(password).fill('12345678**Aa');
   
 
@@ -94,6 +95,57 @@ test('ejercicio', async ({ browser }) => {
        }
       
     }
+
+
+
+    //En caso de no encontrar un localizador preciso se puede utilizar .first() para que tome el primer elemento del dom
+    //.toHaveText() se utiliza para validar que el elemento si tenga el texto indicado
+    expect(page.locator(".user__name [type='text']").first()).toHaveText(emailUser);
+    //clic al botón
+    await page.locator(".btnn").click();
+    //valida que un elemento tenga un texto en especifico
+    await expect (page.locator(".hero-primary")).toHaveText(" Thankyou for the order. ")
+    //se obtiene la orden de compra
+    const orderId = await page.locator(".em-spacer-1 .ng-star-inserted").textContent();
+    //se imprime en la consola el id de la compra
+    console.log(orderId);
+
+
+    //localizar las ordenes  //button[@routerlink='/dashboard/myorders'] y dar clic
+
+    await page.locator("//button[@routerlink='/dashboard/myorders']").click();
+
+
+    //espera a que el primer elemento se encuentre disponible
+  await page.locator(".ng-star-inserted [scope='row']").first().waitFor();
+    //devuelve un numero entero de la cantidad de elementos de la lista
+    const orders = await page.locator(".ng-star-inserted [scope='row']").count();
+
+
+    //se recorre la lista
+    for (let i = 0; i < orders ; i++) {
+
+      const TextId = await page.locator(".ng-star-inserted [scope='row']").nth(i).textContent();
+      //se limpia texto
+      const orderIdClean = orderId?.replace(/\|/g, '').trim();
+      //se valida coincidencia
+      if (TextId === orderIdClean) {
+        //se realiza clic en botón
+        await page.locator('button').filter({ hasText: 'View' }).nth(i).click();
+        break;
+        
+      }
+      
+
+      
+      
+    }
+
+
+    
+
+
+
 
 
 
