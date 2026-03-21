@@ -125,11 +125,11 @@ test('ejercicio', async ({ browser }) => {
     //se recorre la lista
     for (let i = 0; i < orders ; i++) {
 
-      const TextId = await page.locator(".ng-star-inserted [scope='row']").nth(i).textContent();
+      const textId = await page.locator(".ng-star-inserted [scope='row']").nth(i).textContent();
       //se limpia texto
       const orderIdClean = orderId?.replace(/\|/g, '').trim();
       //se valida coincidencia
-      if (TextId === orderIdClean) {
+      if (textId === orderIdClean) {
         //se realiza clic en botón
         await page.locator('button').filter({ hasText: 'View' }).nth(i).click();
         break;
@@ -141,14 +141,9 @@ test('ejercicio', async ({ browser }) => {
       
     }
 
+    const orderIdDetails = await page.locator(".col-text.-main").textContent() ;
 
-    
-
-
-
-
-
-
+    expect(orderId?.includes(orderIdDetails)).toBeTruthy();
 
     //se espera   
 
